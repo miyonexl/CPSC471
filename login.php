@@ -25,7 +25,7 @@
     </form>
 
     <?php
-      $servername = "localhost";          //should be same for you
+      $servername = "localhost:3308";          // update this to whatever yours is
       $username = "root";                 //same here
       $password = "admin";        //your localhost password
       //$db = "test";                    //your database name
