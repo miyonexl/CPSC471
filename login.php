@@ -12,7 +12,7 @@
   <body>
 
     
-    <form action="adminPage.php" method="post">
+    <form action="employeeDash.php" method="post">
     
     
     <label for="uname"><b>Username</b></label>
