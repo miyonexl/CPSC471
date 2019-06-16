@@ -17,29 +17,6 @@
         <button id="login">Login</button>
     </form>
 
-<<<<<<< HEAD
     
-=======
-    <?php
-      $servername = "localhost:3308";          // update this to whatever yours is
-      $username = "root";                 //same here
-      $password = "admin";        //your localhost password
-      //$db = "test";                    //your database name
-      
-      $conn = new mysqli($servername, $username, $password); //$db);
-      
-      if($conn->connect_error){
-          die("Connection failed ".$conn->connect_error);
-      }
-
-
-
-
-      if(isset($_GET['Message'])){
-        echo "<script type='text/javascript'>alert('Wrong Username or Password');</script>";
-      }
-      $conn-> close();
-    ?>   
->>>>>>> master
   </body>
 </html>
