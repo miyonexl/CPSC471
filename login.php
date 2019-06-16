@@ -40,7 +40,7 @@
 
 
       if(isset($_GET['Message'])){
-        echo "<script type='text/javascript'>alert('Wrong Username or Password');</script>";
+        echo "<script type='text/javascript'>alert('Invalid Username or Password');</script>";
       }
       $conn-> close();
     ?>   
