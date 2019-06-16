@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.7.17-log)
-# Date: 2019-06-15 20:08:36
+# Date: 2019-06-16 00:01:52
 # Generator: MySQL-Front 6.1  (Build 1.26)
 
 
@@ -18,6 +18,7 @@ CREATE TABLE `company` (
 # Data for table "company"
 #
 
+INSERT INTO `company` VALUES ('CompanyI','Calgary');
 
 #
 # Structure for table "department"
@@ -38,6 +39,7 @@ CREATE TABLE `department` (
 # Data for table "department"
 #
 
+INSERT INTO `department` VALUES ('Dept1',1,'CompanyI'),('Dept2',2,'CompanyI'),('Dept3',3,'CompanyI');
 
 #
 # Structure for table "employee"
@@ -69,6 +71,7 @@ CREATE TABLE `employee` (
 # Data for table "employee"
 #
 
+INSERT INTO `employee` VALUES (1,'FName1','MName1','LName1',50000.00,0,'Dept1','CompanyI','2019-06-15','m','pass1'),(2,'FName2','MName2','LName2',20000.00,1,'Dept1','CompanyI','2019-06-16','u','pass2'),(3,'FName3',NULL,'LName3',0.00,1,'Dept2','CompanyI',NULL,'u','pass3');
 
 #
 # Structure for table "manager"
@@ -85,6 +88,7 @@ CREATE TABLE `manager` (
 # Data for table "manager"
 #
 
+INSERT INTO `manager` VALUES (1);
 
 #
 # Structure for table "individual"
@@ -157,6 +161,7 @@ CREATE TABLE `manages` (
 # Data for table "manages"
 #
 
+INSERT INTO `manages` VALUES (1,'Dept1','2019-06-16');
 
 #
 # Structure for table "ongoing"
@@ -175,6 +180,7 @@ CREATE TABLE `ongoing` (
 # Data for table "ongoing"
 #
 
+INSERT INTO `ongoing` VALUES ('Proj2','2019-06-15','2019-07-12');
 
 #
 # Structure for table "pipeline"
@@ -192,6 +198,7 @@ CREATE TABLE `pipeline` (
 # Data for table "pipeline"
 #
 
+INSERT INTO `pipeline` VALUES ('Proj1','2019-07-18');
 
 #
 # Structure for table "project"
@@ -211,6 +218,7 @@ CREATE TABLE `project` (
 # Data for table "project"
 #
 
+INSERT INTO `project` VALUES ('Proj1',1,'Requirements1','Description1','p'),('Proj2',2,'Requirements2','Description2','o'),('Proj3',3,'Requirements3','Description3','f'),('Proj4',4,NULL,NULL,'c');
 
 #
 # Structure for table "holiday"
@@ -251,6 +259,7 @@ CREATE TABLE `finished` (
 # Data for table "finished"
 #
 
+INSERT INTO `finished` VALUES ('Proj3','2019-06-15');
 
 #
 # Structure for table "cancelled"
@@ -268,6 +277,7 @@ CREATE TABLE `cancelled` (
 # Data for table "cancelled"
 #
 
+INSERT INTO `cancelled` VALUES ('Proj4','2019-06-15');
 
 #
 # Structure for table "allocation"
@@ -278,6 +288,7 @@ CREATE TABLE `allocation` (
   `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
   `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
   `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
+  `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `AllocType` char(1) NOT NULL DEFAULT '',
   PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`),
   KEY `EmployeeID` (`EmployeeID`),
@@ -411,15 +422,16 @@ CREATE TABLE `work` (
 DROP TABLE IF EXISTS `works_on`;
 CREATE TABLE `works_on` (
   `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
-  `DeptName` varchar(255) NOT NULL DEFAULT 'DName',
+  `ProjName` varchar(255) NOT NULL DEFAULT 'DName',
   `Hours` decimal(3,1) unsigned NOT NULL DEFAULT '0.0',
-  PRIMARY KEY (`EmployeeID`,`DeptName`),
-  KEY `DeptName` (`DeptName`),
+  PRIMARY KEY (`EmployeeID`,`ProjName`),
+  KEY `works_on_ibfk_2` (`ProjName`),
   CONSTRAINT `works_on_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `works_on_ibfk_2` FOREIGN KEY (`DeptName`) REFERENCES `department` (`DeptName`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `works_on_ibfk_2` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Data for table "works_on"
 #
 
+INSERT INTO `works_on` VALUES (1,'Proj2',8.0),(2,'Proj2',6.5),(3,'Proj1',10.0);
