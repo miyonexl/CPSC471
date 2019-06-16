@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.7.17-log)
-# Date: 2019-06-15 19:55:44
+# Date: 2019-06-15 20:08:36
 # Generator: MySQL-Front 6.1  (Build 1.26)
 
 
@@ -55,6 +55,7 @@ CREATE TABLE `employee` (
   `CompName` varchar(255) NOT NULL DEFAULT 'CompName',
   `EmpStartDate` date DEFAULT NULL,
   `UserType` char(1) NOT NULL DEFAULT 'M',
+  `Password` varchar(255) NOT NULL DEFAULT 'abcdefgh',
   PRIMARY KEY (`EmployeeID`),
   KEY `employee_ibfk_2` (`CompName`),
   KEY `DeptName` (`DeptName`),
