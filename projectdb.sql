@@ -1,59 +1,6 @@
 ﻿# Host: localhost  (Version 5.7.17-log)
-# Date: 2019-06-15 17:43:22
+# Date: 2019-06-15 19:55:44
 # Generator: MySQL-Front 6.1  (Build 1.26)
-
-
-#
-# Structure for table "allocate"
-#
-
-DROP TABLE IF EXISTS `allocate`;
-CREATE TABLE `allocate` (
-  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
-  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
-  `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
-  `Day` date NOT NULL DEFAULT '0000-00-00',
-  `Hours` decimal(2,1) unsigned NOT NULL DEFAULT '0.0',
-  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "allocate"
-#
-
-
-#
-# Structure for table "allocation"
-#
-
-DROP TABLE IF EXISTS `allocation`;
-CREATE TABLE `allocation` (
-  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
-  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
-  `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
-  `AllocType` char(1) NOT NULL DEFAULT '',
-  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "allocation"
-#
-
-
-#
-# Structure for table "cancelled"
-#
-
-DROP TABLE IF EXISTS `cancelled`;
-CREATE TABLE `cancelled` (
-  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
-  `CancelDate` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`ProjName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "cancelled"
-#
 
 
 #
@@ -73,22 +20,6 @@ CREATE TABLE `company` (
 
 
 #
-# Structure for table "complete"
-#
-
-DROP TABLE IF EXISTS `complete`;
-CREATE TABLE `complete` (
-  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
-  `ListOfProjects` varchar(500) NOT NULL DEFAULT '',
-  PRIMARY KEY (`EmployeeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "complete"
-#
-
-
-#
 # Structure for table "department"
 #
 
@@ -98,28 +29,13 @@ CREATE TABLE `department` (
   `DeptNumber` int(11) unsigned NOT NULL DEFAULT '0',
   `CompName` char(8) NOT NULL DEFAULT 'CompanyI',
   PRIMARY KEY (`DeptName`),
-  UNIQUE KEY `DeptNumber` (`DeptNumber`)
+  UNIQUE KEY `DeptNumber` (`DeptNumber`),
+  KEY `department_ibfk_1` (`CompName`),
+  CONSTRAINT `department_ibfk_1` FOREIGN KEY (`CompName`) REFERENCES `company` (`CompName`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Data for table "department"
-#
-
-
-#
-# Structure for table "departmental"
-#
-
-DROP TABLE IF EXISTS `departmental`;
-CREATE TABLE `departmental` (
-  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
-  `UnusedRes` int(11) DEFAULT NULL,
-  `BorrowedRes` int(11) DEFAULT NULL,
-  PRIMARY KEY (`EmployeeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "departmental"
 #
 
 
@@ -134,70 +50,22 @@ CREATE TABLE `employee` (
   `MName` varchar(255) DEFAULT NULL,
   `LName` varchar(255) NOT NULL DEFAULT 'LName',
   `Salary` decimal(10,2) unsigned DEFAULT '0.00',
-  `ManagerID` varchar(255) DEFAULT NULL,
+  `ManagerID` int(11) unsigned DEFAULT '0',
   `DeptName` varchar(255) NOT NULL DEFAULT 'DName',
   `CompName` varchar(255) NOT NULL DEFAULT 'CompName',
   `EmpStartDate` date DEFAULT NULL,
   `UserType` char(1) NOT NULL DEFAULT 'M',
   PRIMARY KEY (`EmployeeID`),
-  KEY `Work For` (`CompName`),
-  KEY `Is A Part Of` (`DeptName`),
-  CONSTRAINT `Is A Part Of` FOREIGN KEY (`DeptName`) REFERENCES `department` (`DeptName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `Work For` FOREIGN KEY (`CompName`) REFERENCES `company` (`CompName`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `employee_ibfk_2` (`CompName`),
+  KEY `DeptName` (`DeptName`),
+  KEY `ManagerID` (`ManagerID`),
+  CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`CompName`) REFERENCES `company` (`CompName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `employee_ibfk_3` FOREIGN KEY (`DeptName`) REFERENCES `department` (`DeptName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `employee_ibfk_4` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Data for table "employee"
-#
-
-
-#
-# Structure for table "finished"
-#
-
-DROP TABLE IF EXISTS `finished`;
-CREATE TABLE `finished` (
-  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
-  `FinDate` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`ProjName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "finished"
-#
-
-
-#
-# Structure for table "holiday"
-#
-
-DROP TABLE IF EXISTS `holiday`;
-CREATE TABLE `holiday` (
-  `ProjName` varchar(11) NOT NULL DEFAULT 'PName',
-  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
-  `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
-  `Date` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "holiday"
-#
-
-
-#
-# Structure for table "individual"
-#
-
-DROP TABLE IF EXISTS `individual`;
-CREATE TABLE `individual` (
-  `EmployeeID` int(11) NOT NULL DEFAULT '0',
-  `OvertimeReq` decimal(3,1) unsigned DEFAULT NULL,
-  PRIMARY KEY (`EmployeeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "individual"
 #
 
 
@@ -209,11 +77,63 @@ DROP TABLE IF EXISTS `manager`;
 CREATE TABLE `manager` (
   `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`EmployeeID`),
-  CONSTRAINT `Subclass` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`)
+  CONSTRAINT `manager_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Data for table "manager"
+#
+
+
+#
+# Structure for table "individual"
+#
+
+DROP TABLE IF EXISTS `individual`;
+CREATE TABLE `individual` (
+  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
+  `OvertimeReq` decimal(3,1) unsigned DEFAULT NULL,
+  PRIMARY KEY (`EmployeeID`),
+  CONSTRAINT `individual_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "individual"
+#
+
+
+#
+# Structure for table "complete"
+#
+
+DROP TABLE IF EXISTS `complete`;
+CREATE TABLE `complete` (
+  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
+  `ListOfProjects` varchar(500) NOT NULL DEFAULT '',
+  PRIMARY KEY (`EmployeeID`),
+  CONSTRAINT `complete_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "complete"
+#
+
+
+#
+# Structure for table "departmental"
+#
+
+DROP TABLE IF EXISTS `departmental`;
+CREATE TABLE `departmental` (
+  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
+  `UnusedRes` int(11) DEFAULT NULL,
+  `BorrowedRes` int(11) DEFAULT NULL,
+  PRIMARY KEY (`EmployeeID`),
+  CONSTRAINT `departmental_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "departmental"
 #
 
 
@@ -227,9 +147,9 @@ CREATE TABLE `manages` (
   `DeptName` varchar(255) NOT NULL DEFAULT 'DName',
   `StartDate` date DEFAULT NULL,
   PRIMARY KEY (`ManagerID`,`DeptName`),
-  KEY `DeptName` (`DeptName`),
-  CONSTRAINT `manages_ibfk_1` FOREIGN KEY (`DeptName`) REFERENCES `department` (`DeptName`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `manages_ibfk_2` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `manages_ibfk_1` (`DeptName`),
+  CONSTRAINT `manages_ibfk_1` FOREIGN KEY (`DeptName`) REFERENCES `department` (`DeptName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `manages_ibfk_2` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -246,7 +166,8 @@ CREATE TABLE `ongoing` (
   `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
   `StartDate` date NOT NULL DEFAULT '0000-00-00',
   `EstFinDate` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`ProjName`)
+  PRIMARY KEY (`ProjName`),
+  CONSTRAINT `ongoing_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -262,7 +183,8 @@ DROP TABLE IF EXISTS `pipeline`;
 CREATE TABLE `pipeline` (
   `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
   `EstStartDate` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`ProjName`)
+  PRIMARY KEY (`ProjName`),
+  CONSTRAINT `pipeline_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -290,6 +212,110 @@ CREATE TABLE `project` (
 
 
 #
+# Structure for table "holiday"
+#
+
+DROP TABLE IF EXISTS `holiday`;
+CREATE TABLE `holiday` (
+  `ProjName` varchar(11) NOT NULL DEFAULT 'PName',
+  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
+  `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
+  `Date` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`),
+  KEY `EmployeeID` (`EmployeeID`),
+  KEY `ManagerID` (`ManagerID`),
+  CONSTRAINT `holiday_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `holiday_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `holiday_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "holiday"
+#
+
+
+#
+# Structure for table "finished"
+#
+
+DROP TABLE IF EXISTS `finished`;
+CREATE TABLE `finished` (
+  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
+  `FinDate` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`ProjName`),
+  CONSTRAINT `finished_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "finished"
+#
+
+
+#
+# Structure for table "cancelled"
+#
+
+DROP TABLE IF EXISTS `cancelled`;
+CREATE TABLE `cancelled` (
+  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
+  `CancelDate` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`ProjName`),
+  CONSTRAINT `cancelled_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "cancelled"
+#
+
+
+#
+# Structure for table "allocation"
+#
+
+DROP TABLE IF EXISTS `allocation`;
+CREATE TABLE `allocation` (
+  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
+  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
+  `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
+  `AllocType` char(1) NOT NULL DEFAULT '',
+  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`),
+  KEY `EmployeeID` (`EmployeeID`),
+  KEY `ManagerID` (`ManagerID`),
+  CONSTRAINT `allocation_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `allocation_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `allocation_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "allocation"
+#
+
+
+#
+# Structure for table "allocate"
+#
+
+DROP TABLE IF EXISTS `allocate`;
+CREATE TABLE `allocate` (
+  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
+  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
+  `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
+  `Day` date NOT NULL DEFAULT '0000-00-00',
+  `Hours` decimal(2,1) unsigned NOT NULL DEFAULT '0.0',
+  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`),
+  KEY `EmployeeID` (`EmployeeID`),
+  KEY `ManagerID` (`ManagerID`),
+  CONSTRAINT `allocate_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `allocate_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `allocate_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "allocate"
+#
+
+
+#
 # Structure for table "report"
 #
 
@@ -299,7 +325,8 @@ CREATE TABLE `report` (
   `RStartDate` date NOT NULL DEFAULT '0000-00-00',
   `REndDate` date DEFAULT NULL,
   `ReportType` char(1) NOT NULL DEFAULT '',
-  PRIMARY KEY (`EmployeeID`)
+  PRIMARY KEY (`EmployeeID`),
+  CONSTRAINT `report_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -317,7 +344,12 @@ CREATE TABLE `request_report` (
   `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
   `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
   `TimeOfRequest` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`)
+  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`),
+  KEY `EmployeeID` (`EmployeeID`),
+  KEY `ManagerID` (`ManagerID`),
+  CONSTRAINT `request_report_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `request_report_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `request_report_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -335,7 +367,12 @@ CREATE TABLE `time_off` (
   `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
   `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
   `Date` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`)
+  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`),
+  KEY `EmployeeID` (`EmployeeID`),
+  KEY `ManagerID` (`ManagerID`),
+  CONSTRAINT `time_off_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `time_off_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `time_off_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -353,7 +390,12 @@ CREATE TABLE `work` (
   `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
   `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
   `Task` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`)
+  PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`),
+  KEY `EmployeeID` (`EmployeeID`),
+  KEY `ManagerID` (`ManagerID`),
+  CONSTRAINT `work_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `work_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `work_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -370,7 +412,10 @@ CREATE TABLE `works_on` (
   `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
   `DeptName` varchar(255) NOT NULL DEFAULT 'DName',
   `Hours` decimal(3,1) unsigned NOT NULL DEFAULT '0.0',
-  PRIMARY KEY (`EmployeeID`,`DeptName`)
+  PRIMARY KEY (`EmployeeID`,`DeptName`),
+  KEY `DeptName` (`DeptName`),
+  CONSTRAINT `works_on_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `works_on_ibfk_2` FOREIGN KEY (`DeptName`) REFERENCES `department` (`DeptName`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
