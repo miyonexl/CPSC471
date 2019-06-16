@@ -11,6 +11,7 @@ session_start();
 		header("Location: login.php");
 	}else{
 		$_SESSION["username"] = $username;
-		header("Location: EmployeeDashboard.php");
+		$_SESSION["type"] = "manage";
+		header("Location: dashboard.php");
 	}
 ?>
