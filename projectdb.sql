@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.7.17-log)
-# Date: 2019-06-16 16:16:39
+# Date: 2019-06-17 01:09:14
 # Generator: MySQL-Front 6.1  (Build 1.26)
 
 
@@ -69,7 +69,7 @@ CREATE TABLE `employee` (
 # Data for table "employee"
 #
 
-INSERT INTO `employee` VALUES (1,'FName1','MName1','LName1',50000.00,0,'2019-06-15','m','pass1','Dept1','CompanyI'),(2,'FName2','MName2','LName2',20000.00,0,'2019-06-16','u','pass2','Dept1','CompanyI'),(3,'FName3',NULL,'LName3',0.00,0,NULL,'u','pass3','Dept2','CompanyI'),(4,'FName1','MName1','LName1',50000.00,0,'2019-06-16','m','pass4','Dept2','CompanyI');
+INSERT INTO `employee` VALUES (1,'FName1','MName1','LName1',50000.00,0,'2019-06-15','m','pass1','Dept1','CompanyI'),(2,'FName2','MName2','LName2',20000.00,0,'2019-06-16','u','pass2','Dept1','CompanyI'),(3,'FName3',NULL,'LName3',0.00,0,NULL,'u','pass3','Dept2','CompanyI'),(4,'FName4','MName4','LName4',50000.00,0,'2019-06-16','m','pass4','Dept2','CompanyI');
 
 #
 # Structure for table "manages"
@@ -209,7 +209,7 @@ CREATE TABLE `allocation` (
 # Data for table "allocation"
 #
 
-INSERT INTO `allocation` VALUES ('Proj1',3,1,'2019-07-18','h','TaskDescription3'),('Proj2',1,1,'2019-06-16','t','TaskDescription2'),('Proj2',2,1,'2019-06-15','w','TaskDescription1');
+INSERT INTO `allocation` VALUES ('Proj1',3,4,'2019-07-18','h','TaskDescription3'),('Proj2',1,1,'2019-06-17','t','TaskDescription2'),('Proj2',2,1,'2019-06-16','w','TaskDescription1');
 
 #
 # Structure for table "allocate"
@@ -221,7 +221,7 @@ CREATE TABLE `allocate` (
   `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
   `ManagerID` int(11) unsigned NOT NULL DEFAULT '0',
   `Date` date NOT NULL DEFAULT '0000-00-00',
-  `Hours` decimal(2,1) unsigned NOT NULL DEFAULT '0.0',
+  `Hours` decimal(2,1) unsigned NOT NULL DEFAULT '8.0',
   PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`,`Date`),
   KEY `EmployeeID` (`EmployeeID`),
   KEY `ManagerID` (`ManagerID`),
@@ -234,7 +234,7 @@ CREATE TABLE `allocate` (
 # Data for table "allocate"
 #
 
-INSERT INTO `allocate` VALUES ('Proj1',3,1,'2019-07-18',7.0),('Proj2',1,1,'2019-06-16',8.0),('Proj2',2,1,'2019-06-15',8.0);
+INSERT INTO `allocate` VALUES ('Proj1',3,4,'2019-07-18',7.0),('Proj2',1,1,'2019-06-17',8.0),('Proj2',2,1,'2019-06-16',8.0);
 
 #
 # Structure for table "report"
@@ -258,7 +258,7 @@ CREATE TABLE `report` (
 # Data for table "report"
 #
 
-INSERT INTO `report` VALUES (1,'2019-06-15','2019-07-15','c','List1',NULL,NULL,NULL),(1,'2019-06-15','2019-09-24','d',NULL,0,0,NULL),(2,'2019-06-15','2019-12-15','i',NULL,NULL,NULL,0.0);
+INSERT INTO `report` VALUES (1,'2019-06-15','2019-07-15','c','List1',NULL,NULL,NULL),(1,'2019-06-15','2019-09-24','d',NULL,0,0,NULL),(1,'2019-06-15','2019-12-15','i',NULL,NULL,NULL,0.0),(2,'2019-06-15','2019-12-15','i',NULL,NULL,NULL,0.0);
 
 #
 # Structure for table "request_report"
@@ -289,7 +289,7 @@ CREATE TABLE `request_report` (
 # Data for table "request_report"
 #
 
-INSERT INTO `request_report` VALUES ('Proj2',1,1,'2019-06-15',1,'2019-06-15','2019-07-15','c',NULL),('Proj2',1,1,'2019-06-15',1,'2019-06-15','2019-11-15','d',NULL),('Proj2',2,1,'2019-06-15',2,'2019-06-15','2019-12-15','i',NULL);
+INSERT INTO `request_report` VALUES ('Proj1',3,1,'2019-07-18',1,'2019-06-15','2019-11-15','d',NULL),('Proj2',1,1,'2019-06-17',1,'2019-06-15','2019-07-15','c',NULL),('Proj2',2,1,'2019-06-16',1,'2019-06-15','2019-12-15','i',NULL),('Proj2',2,1,'2019-06-16',2,'2019-06-15','2019-12-15','i',NULL);
 
 #
 # Structure for table "works_on"
