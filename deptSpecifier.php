@@ -43,9 +43,14 @@ session_start();
 </head>
 
 <body>
+    <script>
+        function goBack(){
+            window.history.go(-1);
+        }
+    </script>
     <div id="welcomeBox"> 
         <h2 id="Welcome">Departments</h2>
-        <a href="./settings.php">settings</a>
+        <a href="#" onclick="goBack()">Go back</a>
     </div>
 
     <div id="mainView">
@@ -78,7 +83,7 @@ session_start();
                     if($_SESSION["rType"] == "D"){
                         echo "<tr><td><a href=\"DReport.php?dept=".$row["DeptName"]. "&startDate=".$startDate."&endDate=".$endDate."\">".$row["DeptName"]."</td><td>".$row["DeptNumber"]."</td><td>".$row["CompName"]."</a></td></tr>";
                     }else{
-                        echo "<tr><td><a href=\"IReport.php?dept=".$row["DeptName"]. "&startDate=".$startDate."&endDate=".$endDate."\">".$row["DeptName"]."</td><td>".$row["DeptNumber"]."</td><td>".$row["CompName"]."</a></td></tr>";
+                        echo "<tr><td><a href=\"empList.php?dept=".$row["DeptName"]. "&startDate=".$startDate."&endDate=".$endDate."\">".$row["DeptName"]."</td><td>".$row["DeptNumber"]."</td><td>".$row["CompName"]."</a></td></tr>";
                     }
                 }
                 echo "</table>";

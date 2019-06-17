@@ -35,10 +35,15 @@ session_start();
         }
     ?>
 
+    <script>
+        function goBack(){
+            window.history.go(-1);
+        }
+    </script>
 
     <div id="welcomeBox"> 
         <h2 id="Welcome">Reports</h2>
-        <a href="./settings.php">settings</a>
+        <a href="#" onclick="goBack()">Go back</a>
     </div>
 
     <div id="options">

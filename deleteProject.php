@@ -12,11 +12,15 @@ session_start();
 </head>
 
 <body>
-
+    <script>
+        function goBack(){
+            window.history.go(-1);
+        }
+    </script>
 
     <div class="welcomeBox"> 
         <h2 class="Welcome">Delete Projects:</h2>
-        <a href="./settings.php">settings</a>
+        <a href="#" onclick="goBack()">Go back</a>
     </div>
 
     <div class="mainView">

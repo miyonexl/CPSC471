@@ -12,11 +12,15 @@ session_start();
 </head>
 
 <body>
-
+    <script>
+        function goBack(){
+            window.history.go(-1);
+        }
+    </script>
 
     <div class="welcomeBox"> 
         <h2 class="Welcome">Add Projects:</h2>
-        <a href="./settings.php">settings</a>
+        <a href="#" onclick="goBack()">Go back</a>
     </div>
 
     <div class="mainView">
@@ -31,7 +35,7 @@ session_start();
             <input id="prjReq" type="text" placeholder="Requirements" name="req">
 
             <label for="desc"><b>Description</b></label>
-            <input id="prjDesc" type="text" placeholder="Project name (required)" name="desc">
+            <input id="prjDesc" type="text" placeholder="Description" name="desc">
 
             <label for="pType"><b>Project Type</b></label>
             <input id="prjType" type="text" placeholder="Project type code (required)" name="pType" required>

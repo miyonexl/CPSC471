@@ -11,13 +11,15 @@ session_start();
 </head>
 
 <body>
+    <script>
+        function goBack(){
+            window.history.go(-1);
+        }
+    </script>
     <div id="welcomeBox"> 
         <h2 id="Welcome">Reports</h2>
-        <a href="./settings.php">settings</a>
+        <a href="#" onclick="goBack()">Go back</a>
     </div>
-    <?php 
-        $test = "testing";
-    ?>
 
     <div id="mainView">
        <?php if($_SESSION["rType"] == "C"){ ?>
@@ -32,7 +34,10 @@ session_start();
             <input type="hidden" name="test" value="<?php echo $test;?>"> 
             <button>Submit</button>
         </form> <?php }else if($_SESSION["rType"] == "I"){ ?>
+            <?php if($_SESSION["type"] == "m"){ ?>
         <form action="deptSpecifier.php" method="post">
+            <?php }else{ ?>
+        <form action="IReport.php" method="post"> <?php } ?>
             Start date: <input type="date" name="startDate">
             End date: <input type="date" name="endDate">
             <button>Submit</button>

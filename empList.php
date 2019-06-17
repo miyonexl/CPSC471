@@ -38,6 +38,7 @@ session_start();
             background-color: #d8d8d8;
         }
     </style>
+
 </head>
 
 <body>
@@ -47,7 +48,7 @@ session_start();
         }
     </script>
     <div id="welcomeBox"> 
-        <h2 id="Welcome">Department Reports</h2>
+        <h2 id="Welcome">Individual Report</h2>
         <a href="#" onclick="goBack()">Go back</a>
     </div>
 
@@ -63,38 +64,32 @@ session_start();
             $servername = "localhost";          //should be same for you
             $username = "root";                 //same here
             $password = "MusicDataBase";             //your localhost root password
-            $db = "cpsc471";                     //your database name
-                    
-            $conn = new mysqli($servername, $username, $password, $db);
-                    
-            if($conn->connect_error){
-                die("Connection failed".$conn->connect_error);
-            }
+            $db = "cpsc471";                     //your database name                
+        $conn = new mysqli($servername, $username, $password, $db);
+                
+        if($conn->connect_error){
+            die("Connection failed".$conn->connect_error);
+        }
 
-            $sql = "SELECT  `E`.`DeptName`, `A`.`EmployeeID`, `A`.`Date`, `A`.`ProjName`, `L`.`AllocType`, 
-   `L`.`Task`, `A`.`Hours`
-FROM        `EMPLOYEE` E, `EMPLOYEE` M, `ALLOCATE` A, `ALLOCATION` L
-WHERE   `M`.`EmployeeID` = '$uname' AND `M`.`UserType` = 'm' AND `E`.`DeptName`
-           = '$dept' AND `E`.`EmployeeID` = `A`.`EmployeeID` AND 
-           `A`.`EmployeeID` = `L`.`EmployeeID` AND `A`.`Date` >= '&startDate' AND
-           `A`.`Date` <= '$endDate'
-ORDER BY    `E`.`DeptName`, `A`.`Date` ASC, `A`.`ProjName`";
+        $sql = "SELECT EmployeeID, FName, MName, LName FROM EMPLOYEE WHERE DeptName = '$dept'";
 
 
-            $result = $conn->query($sql);
+        $result = $conn->query($sql);
 
-            if($result->num_rows > 0){
-                echo "<table><tr><th>Department</th><th>Employee ID</th><th>Date</th><th>Project Name</th><th>Allocation Type</th><th>Task</th><th>Hours</th></tr>";
+
+        if($result->num_rows > 0){
+            echo "<table><tr><th>Employee ID</th><th>First name</th><th>Middle name</th><th>Last name</th></tr>";
                 while($row = $result->fetch_assoc()){
-                  echo "<tr><td>".$row["DeptName"]."</td><td>".$row["EmployeeID"]."</td><td>".$row["Date"]."</td><td>".$row["ProjName"]."</td><td>".$row["AllocType"]."</td><td>".$row["Task"]."</td><td>".$row["Hours"]."</td></tr>";
+                    echo "<tr><td><a href=\"IReport.php?eId=".$row["EmployeeID"]. "&startDate=".$startDate."&endDate=".$endDate."\">".$row["EmployeeID"]."</td><td>".$row["FName"]."</td><td>".$row["MName"]."</td><td>".$row["LName"]."</td></tr>";
                 }
                 echo "</table>";
-            }else{
-                echo "nothing";
-            }
-            $conn-> close();
-        ?>
-    </div>
+        }else{
+
+            echo "No projects";
+        }
+        $conn-> close();
+    ?>
+  </div>
 
 </body>
 

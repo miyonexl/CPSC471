@@ -8,13 +8,19 @@
 </head>
 
 <body>
+    <script>
+        function goBack(){
+            window.history.go(-1);
+        }
+    </script>
     <div id="welcomeBox"> 
         <h2 id="Welcome">Account Settings</h2>
-        <a href="./dashboard.php">settings</a>
+        <a href="#" onclick="goBack()">Go back</a>
     </div>
 
     <div id="options">
-        <button>Change Password</button>
+        <button onclick="javascript:location.href='changePassword.php'"">Change Password</button>
+        <button onclick="javascript:location.href='endSession.php'"">Sign Out</button>        
     </div>
 
     <div id="mainView"></div>

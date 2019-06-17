@@ -8,18 +8,54 @@ session_start();
 <head>
     <title>Company Report</title>
     <link href="./css/style.css" rel="stylesheet" type="text/css"/>
+
+    <style>
+        table {
+            font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td {
+            font-size: 80%;
+            border: 1px solid #777777;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            font-size: 125%;
+            border: 1px solid #777777;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #60a4db;
+        }
+
+        tr:nth-child(odd){
+            background-color: #d8d8d8;
+        }
+    </style>
 </head>
 
 <body>
+    <script>
+        function goBack(){
+            window.history.go(-1);
+        }
+    </script>
     <div id="welcomeBox"> 
         <h2 id="Welcome">Company Reports</h2>
-        <a href="./settings.php">settings</a>
+        <a href="#" onclick="goBack()">Go back</a>
     </div>
 
     <div id="mainView">
         <?php 
             $startDate = $_POST["startDate"];
             $endDate = $_POST["endDate"];
+            $uname = $_SESSION["uname"];
 
             // put your code here
             $servername = "localhost";          //should be same for you
@@ -33,23 +69,21 @@ session_start();
                 die("Connection failed".$conn->connect_error);
             }
 
-            $sql = "SELECT  `M`.`DeptName`, `A`.`EmployeeID`, `T`.`Date`, `T`.`ProjName`, `A`.`AllocType`, `A`.`Task`, `L`.`Hours` "
-                    ."FROM        `REQUEST_REPORT` T, `REPORT` R, `EMPLOYEE` E, `ALLOCATE` L, `ALLOCATION` A, `EMPLOYEE` M "
-                    ."WHERE   `R`.`ReportType` = 'c' AND `R`.`EmployeeID` = `T`.`UserID` AND `T`.`UserID` = `E`.`EmployeeID` "
-                    ."AND `E`.`UserType` = 'm' AND `T`.`ProjName` = `A`.`ProjName` AND `T`.`EmployeeID` = `A`.`EmployeeID` "
-                    ."AND `T`.`ManagerID` = `A`.`ManagerID` AND `T`.`Date` = `A`.`Date` AND `A`.`ProjName` = `L`.`ProjName` "
-                    ."AND `A`.`EmployeeID` = `L`.`EmployeeID`AND `A`.`ManagerID` = `L`.`ManagerID` AND `A`.`Date` = `L`.`Date` "
-                    ."AND `T`.`Date` >= `T`.`RStartDate` AND `T`.`Date` <= `T`.`REndDate` AND`L`.`EmployeeID` = `M`.`EmployeeID` "
-                    ."AND `T`.`RStartDate` = '$startDate' AND `T`.`REndDate` = '$endDate' "
-                    ."ORDER BY    `M`.`DeptName`, `T`.`Date` ASC, `T`.`ProjName`";
+            $sql = "SELECT  `E`.`DeptName`, `A`.`EmployeeID`, `A`.`Date`, `A`.`ProjName`, `L`.`AllocType`, 
+   `L`.`Task`, `A`.`Hours`
+FROM        `EMPLOYEE` E, `EMPLOYEE` M, `ALLOCATE` A, `ALLOCATION` L
+WHERE   `M`.`EmployeeID` = '$uname' AND `M`.`UserType` = 'm' AND `E`.`EmployeeID` 
+   = `A`.`EmployeeID` AND `A`.`EmployeeID` = `L`.`EmployeeID` AND `A`.`Date`
+   >= '$startDate' AND `A`.`Date` <= '$endDate'
+ORDER BY    `E`.`DeptName`, `A`.`Date` ASC, `A`.`ProjName`";
 
 
             $result = $conn->query($sql);
 
             if($result->num_rows > 0){
-            echo "<table><tr><th>Employee ID</th><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Department</th></tr>";
+            echo "<table><tr><th>Department</th><th>Employee ID</th><th>Date</th><th>Project Name</th><th>Allocation Type</th><th>Task</th><th>Hours</th></tr>";
             while($row = $result->fetch_assoc()){
-                  echo "<tr><td>".$row["EmployeeID"]."</td><td>".$row["FName"]."</td><td>".$row["MName"]."</td><td>".$row["LName"]."</td><td>".$row["DeptName"]."</td></tr>";
+                  echo "<tr><td>".$row["DeptName"]."</td><td>".$row["EmployeeID"]."</td><td>".$row["Date"]."</td><td>".$row["ProjName"]."</td><td>".$row["AllocType"]."</td><td>".$row["Task"]."</td><td>".$row["Hours"]."</td></tr>";
             }
             echo "</table>";
         }else{

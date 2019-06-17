@@ -6,7 +6,7 @@ session_start();
 <html>
 
 <head>
-	<title>Dashboard</title>
+	<title>View Project</title>
 	<link href="./css/style.css" rel="stylesheet" type="text/css"/>
 
   <style>
@@ -43,10 +43,14 @@ session_start();
 
 <body>
 
-
+    <script>
+        function goBack(){
+            window.history.go(-1);
+        }
+    </script>
 	<div class="welcomeBox"> 
     <h2 class="Welcome">View Projects:</h2>
-    <a href="./settings.php">settings</a>
+    <a href="#" onclick="goBack()">Go back</a>
   </div>
 
   <div class="options">

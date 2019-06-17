@@ -61,7 +61,7 @@ session_start();
                 </ul>      
             </div>
     		<?php
-        }else{ ?>
+        }else{ $_SESSION["rType"] = "I";?>
         	<div id="welcomeBox"> 
         		<h2 id="Welcome">Welcome to your dashboard, names</h2>
         		<a href="./settings.php">settings</a>
@@ -69,7 +69,7 @@ session_start();
 
     		<div id="options">
     			<button onclick="javascript:location.href='dashboard.php'">Home</button>
-        		<button onclick="javascript:location.href='ManagerReport.php'">Request work report</button>
+        		<button onclick="javascript:location.href='dateSpecifier.php'">Request work report</button>
     		</div>
 
     		<div id="mainView">
