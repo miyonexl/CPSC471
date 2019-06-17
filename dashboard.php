@@ -1,4 +1,3 @@
-
 <?php
 // Start the session
 session_start();
@@ -12,11 +11,10 @@ session_start();
 </head>
 
 <body>
-	<?php 
-        
-        if($_SESSION["type"] == "manager"){ ?>
+	<?php
+        if($_SESSION["type"] == "m"){ ?>
         	<div id="welcomeBox"> 
-        		<h2 id="Welcome">Welcome to your dashboard, names</h2>
+        		<h2 id="Welcome">Welcome to your dashboard, <?php echo $_SESSION["fName"] ?> <?php echo$_SESSION["lName"]?></h2>
        			<a href="./settings.php">settings</a>
     		</div>
 
@@ -28,7 +26,40 @@ session_start();
         		<button>Add work allocation</button>
     		</div>
 
-    		<div id="mainView"></div>
+    		<div id="mainView">
+                <div class="month"> 
+                  <ul>
+                    <li class="prev">&#10094;</li>
+                    <li class="next">&#10095;</li>
+                    <li>August<br><span style="font-size:18px">2017</span></li>
+                  </ul>
+                </div>
+
+                <ul class="weekdays">
+                  <li>Mo</li>
+                  <li>Tu</li>
+                  <li>We</li>
+                  <li>Th</li>
+                  <li>Fr</li>
+                  <li>Sa</li>
+                  <li>Su</li>
+                </ul>
+
+                <ul class="days"> 
+                  <li>1</li>
+                  <li>2</li>
+                  <li>3</li>
+                  <li>4</li>
+                  <li>5</li>
+                  <li>6</li>
+                  <li>7</li>
+                  <li>8</li>
+                  <li>9</li>
+                  <li><span class="active">10</span></li>
+                  <li>11</li>
+                  ...etc
+                </ul>      
+            </div>
     		<?php
         }else{ ?>
         	<div id="welcomeBox"> 
@@ -41,8 +72,41 @@ session_start();
         		<button onclick="javascript:location.href='ManagerReport.php'">Request work report</button>
     		</div>
 
-    		<div id="mainView"></div><?php
-        }
+    		<div id="mainView">
+                <div class="month"> 
+                  <ul>
+                    <li class="prev">&#10094;</li>
+                    <li class="next">&#10095;</li>
+                    <li>August<br><span style="font-size:18px">2017</span></li>
+                  </ul>
+                </div>
+
+                <ul class="weekdays">
+                  <li>Mo</li>
+                  <li>Tu</li>
+                  <li>We</li>
+                  <li>Th</li>
+                  <li>Fr</li>
+                  <li>Sa</li>
+                  <li>Su</li>
+                </ul>
+
+                <ul class="days"> 
+                  <li>1</li>
+                  <li>2</li>
+                  <li>3</li>
+                  <li>4</li>
+                  <li>5</li>
+                  <li>6</li>
+                  <li>7</li>
+                  <li>8</li>
+                  <li>9</li>
+                  <li><span class="active">10</span></li>
+                  <li>11</li>
+                  ...etc
+                </ul>      
+            </div><?php
+        }   $_SESSION["test"] = "test";
     ?>
 
 </body>
