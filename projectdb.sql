@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.7.17-log)
-# Date: 2019-06-16 13:51:43
+# Date: 2019-06-16 16:16:39
 # Generator: MySQL-Front 6.1  (Build 1.26)
 
 
@@ -52,16 +52,15 @@ CREATE TABLE `employee` (
   `MName` varchar(255) DEFAULT NULL,
   `LName` varchar(255) NOT NULL DEFAULT 'LName',
   `Salary` decimal(10,2) unsigned DEFAULT '0.00',
-  `ManagerID` int(11) unsigned DEFAULT '0',
-  `DeptName` varchar(255) NOT NULL DEFAULT 'DName',
-  `CompName` varchar(255) NOT NULL DEFAULT 'CompName',
+  `TimeOffLeft` int(11) unsigned DEFAULT '0',
   `EmpStartDate` date DEFAULT NULL,
   `UserType` char(1) NOT NULL DEFAULT 'M',
   `Password` varchar(255) NOT NULL DEFAULT 'abcdefgh',
+  `DeptName` varchar(255) NOT NULL DEFAULT 'DName',
+  `CompName` varchar(255) NOT NULL DEFAULT 'CompName',
   PRIMARY KEY (`EmployeeID`),
   KEY `employee_ibfk_2` (`CompName`),
   KEY `DeptName` (`DeptName`),
-  KEY `ManagerID` (`ManagerID`),
   CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`CompName`) REFERENCES `company` (`CompName`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `employee_ibfk_3` FOREIGN KEY (`DeptName`) REFERENCES `department` (`DeptName`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -70,24 +69,7 @@ CREATE TABLE `employee` (
 # Data for table "employee"
 #
 
-INSERT INTO `employee` VALUES (1,'FName1','MName1','LName1',50000.00,0,'Dept1','CompanyI','2019-06-15','m','pass1'),(2,'FName2','MName2','LName2',20000.00,1,'Dept1','CompanyI','2019-06-16','u','pass2'),(3,'FName3',NULL,'LName3',0.00,1,'Dept2','CompanyI',NULL,'u','pass3');
-
-#
-# Structure for table "manager"
-#
-
-DROP TABLE IF EXISTS `manager`;
-CREATE TABLE `manager` (
-  `EmployeeID` int(11) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`EmployeeID`),
-  CONSTRAINT `manager_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "manager"
-#
-
-INSERT INTO `manager` VALUES (1);
+INSERT INTO `employee` VALUES (1,'FName1','MName1','LName1',50000.00,0,'2019-06-15','m','pass1','Dept1','CompanyI'),(2,'FName2','MName2','LName2',20000.00,0,'2019-06-16','u','pass2','Dept1','CompanyI'),(3,'FName3',NULL,'LName3',0.00,0,NULL,'u','pass3','Dept2','CompanyI'),(4,'FName1','MName1','LName1',50000.00,0,'2019-06-16','m','pass4','Dept2','CompanyI');
 
 #
 # Structure for table "manages"
@@ -101,14 +83,14 @@ CREATE TABLE `manages` (
   PRIMARY KEY (`ManagerID`,`DeptName`),
   KEY `manages_ibfk_1` (`DeptName`),
   CONSTRAINT `manages_ibfk_1` FOREIGN KEY (`DeptName`) REFERENCES `department` (`DeptName`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `manages_ibfk_2` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `manages_ibfk_2` FOREIGN KEY (`ManagerID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 # Data for table "manages"
 #
 
-INSERT INTO `manages` VALUES (1,'Dept1','2019-06-16');
+INSERT INTO `manages` VALUES (1,'Dept1','2019-06-16'),(4,'Dept2',NULL);
 
 #
 # Structure for table "project"
@@ -131,6 +113,24 @@ CREATE TABLE `project` (
 INSERT INTO `project` VALUES ('Proj1',1,'Requirements1','Description1','p'),('Proj2',2,'Requirements2','Description2','o'),('Proj3',3,'Requirements3','Description3','f'),('Proj4',4,NULL,NULL,'c');
 
 #
+# Structure for table "pipeline"
+#
+
+DROP TABLE IF EXISTS `pipeline`;
+CREATE TABLE `pipeline` (
+  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
+  `EstStartDate` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`ProjName`),
+  CONSTRAINT `pipeline_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "pipeline"
+#
+
+INSERT INTO `pipeline` VALUES ('Proj1','2019-07-18');
+
+#
 # Structure for table "ongoing"
 #
 
@@ -148,24 +148,6 @@ CREATE TABLE `ongoing` (
 #
 
 INSERT INTO `ongoing` VALUES ('Proj2','2019-06-15','2019-07-12');
-
-#
-# Structure for table "pipeline"
-#
-
-DROP TABLE IF EXISTS `pipeline`;
-CREATE TABLE `pipeline` (
-  `ProjName` varchar(15) NOT NULL DEFAULT 'PName',
-  `EstStartDate` date NOT NULL DEFAULT '0000-00-00',
-  PRIMARY KEY (`ProjName`),
-  CONSTRAINT `pipeline_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-#
-# Data for table "pipeline"
-#
-
-INSERT INTO `pipeline` VALUES ('Proj1','2019-07-18');
 
 #
 # Structure for table "finished"
@@ -220,7 +202,7 @@ CREATE TABLE `allocation` (
   KEY `ManagerID` (`ManagerID`),
   CONSTRAINT `allocation_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `allocation_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `allocation_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `allocation_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -245,7 +227,7 @@ CREATE TABLE `allocate` (
   KEY `ManagerID` (`ManagerID`),
   CONSTRAINT `allocate_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `allocate_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `allocate_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `allocate_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
@@ -296,9 +278,11 @@ CREATE TABLE `request_report` (
   PRIMARY KEY (`ProjName`,`EmployeeID`,`ManagerID`,`Date`,`UserID`,`RStartDate`,`REndDate`,`ReportType`),
   KEY `EmployeeID` (`EmployeeID`),
   KEY `ManagerID` (`ManagerID`),
+  KEY `UserID` (`UserID`),
   CONSTRAINT `request_report_ibfk_1` FOREIGN KEY (`ProjName`) REFERENCES `project` (`ProjName`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `request_report_ibfk_2` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `request_report_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `manager` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `request_report_ibfk_3` FOREIGN KEY (`ManagerID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `request_report_ibfk_4` FOREIGN KEY (`UserID`) REFERENCES `employee` (`EmployeeID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
