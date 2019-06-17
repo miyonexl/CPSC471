@@ -50,7 +50,7 @@ session_start();
 
     <div id="mainView">
         <div id="test"></div>
-        <?php 
+        <?php
             $startDate = $_POST["startDate"];
             $endDate = $_POST["endDate"];
 
@@ -73,9 +73,13 @@ session_start();
 
 
             if($result->num_rows > 0){
-                echo "<table><tr><th>Department name</th><th>Department number</th><th>Company name</th></tr><form id=\"myform\" action=\"\">";
+                echo "<table><tr><th>Department name</th><th>Department number</th><th>Company name</th></tr>";
                 while($row = $result->fetch_assoc()){
-                    echo "<tr><td><a href=\"DReport.php?dept=".$row["DeptName"]. "&startDate=".$startDate."&endDate=".$endDate."\">".$row["DeptName"]."</td><td>".$row["DeptNumber"]."</td><td>".$row["CompName"]."</a></td></tr>";
+                    if($_SESSION["rType"] == "D"){
+                        echo "<tr><td><a href=\"DReport.php?dept=".$row["DeptName"]. "&startDate=".$startDate."&endDate=".$endDate."\">".$row["DeptName"]."</td><td>".$row["DeptNumber"]."</td><td>".$row["CompName"]."</a></td></tr>";
+                    }else{
+                        echo "<tr><td><a href=\"IReport.php?dept=".$row["DeptName"]. "&startDate=".$startDate."&endDate=".$endDate."\">".$row["DeptName"]."</td><td>".$row["DeptNumber"]."</td><td>".$row["CompName"]."</a></td></tr>";
+                    }
                 }
                 echo "</table>";
             }else{

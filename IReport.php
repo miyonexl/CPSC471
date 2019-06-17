@@ -12,7 +12,7 @@ session_start();
 
 <body>
     <div id="welcomeBox"> 
-        <h2 id="Welcome">Department Reports</h2>
+        <h2 id="Welcome">Individual Report</h2>
         <a href="./settings.php">settings</a>
     </div>
 
@@ -35,12 +35,15 @@ session_start();
                 die("Connection failed".$conn->connect_error);
             }
 
-            $sql = "SELECT    *"
-                    ."FROM        ( ( REQUEST_REPORT NATURAL JOIN EMPLOYEE) NATURAL JOIN"
-                    ."REPORT) NATURAL JOIN ALLOCATE"
-                    ."WHERE    ManagerID <> NULL AND Date >= '$startDate' AND Date <= 'endDate' AND"
-                    ."ReportType = \"c\""
-                    ."ORDER BY    Date, ProjName";
+            $sql = "SELECT  E.DeptName, A.EmployeeID, T.Date, T.ProjName, A.AllocType," 
+                    ."A.Task, L.Hours"
+                    ."FROM        REQUEST_REPORT T, REPORT R, EMPLOYEE E, ALLOCATE L, ALLOCATION A "
+                    ."WHERE    R.ReportType = 'i' AND R.EmployeeID = T.UserID AND T.UserID = E.EmployeeID AND E.UserType = 'm' "
+                    ."AND T.ProjName = A.ProjName AND T.EmployeeID = A.EmployeeID AND "
+                    ."T.ManagerID = A.ManagerID AND T.Date = A.Date AND "
+                    ."A.ProjName = L.ProjName AND A.EmployeeID = L.EmployeeID AND A.ManagerID = L.ManagerID AND A.Date = L.Date "
+                    ."AND T.Date >= T.RStartDate AND T.Date <= T.REndDate AND A.EmployeeID = '3'"
+                    ."ORDER BY     T.Date ASC, T.ProjName";
 
 
             $result = $conn->query($sql);

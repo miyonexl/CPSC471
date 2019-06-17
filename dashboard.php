@@ -21,9 +21,9 @@ session_start();
     		<div id="options">
         		<button onclick="javascript:location.href='dashboard.php'">Home</button>
         		<button onclick="javascript:location.href='ManagerReport.php'">Request work report</button>
-        		<button>Add project</button>
-        		<button>Add employee</button>
-        		<button>Add work allocation</button>
+        		<button onclick="javascript:location.href='viewProject.php'">View projects</button>
+        		<button onclick="javascript:location.href='viewEmployee.php'">View employees</button>
+        		<button onclick="javascript:location.href='addWorkAlloc.php'">Add work allocation</button>
     		</div>
 
     		<div id="mainView">
@@ -106,7 +106,7 @@ session_start();
                   ...etc
                 </ul>      
             </div><?php
-        }   $_SESSION["test"] = "test";
+        }
     ?>
 
 </body>

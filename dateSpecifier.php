@@ -32,7 +32,7 @@ session_start();
             <input type="hidden" name="test" value="<?php echo $test;?>"> 
             <button>Submit</button>
         </form> <?php }else if($_SESSION["rType"] == "I"){ ?>
-        <form action="IReport.php" method="post">
+        <form action="deptSpecifier.php" method="post">
             Start date: <input type="date" name="startDate">
             End date: <input type="date" name="endDate">
             <button>Submit</button>
