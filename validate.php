@@ -7,6 +7,8 @@ session_start();
 	$uname = $_POST["uname"];
 	$psw = $_POST["psw"];
 
+    $_SESSION["uname"] = $uname;
+
     // put your code here
     $servername = "localhost";          //should be same for you
     $username = "root";                 //same here
