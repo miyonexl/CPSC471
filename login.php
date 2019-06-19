@@ -12,7 +12,7 @@
         <input id="username" type="text" placeholder="Enter Username" name="uname" required>
 
         <label for="psw"><b>Password</b></label>
-        <input id="password" type="password" placeholder="Enter Password" name="psw" required>
+        <input id="password" type="text" placeholder="Enter Password" name="psw" required>
 
         <?php 
           if($_GET["Message"] != null){

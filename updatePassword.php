@@ -21,7 +21,8 @@ session_start();
     $cPsw = $_POST["cPsw"];
     $nPsw = $_POST["nPsw"];
     $nPsw2 = $_POST["nPsw2"];
-    $uname = $_POST["uname"];
+    $uname = $_SESSION["uname"];
+    
 
     $sql = "SELECT Password FROM EMPLOYEE WHERE EmployeeID = '$uname'";
 
@@ -38,6 +39,8 @@ session_start();
 
     if($nPsw == $nPsw2){
         $sql = "UPDATE EMPLOYEE SET Password = '$nPsw' WHERE EmployeeID = '$uname'";
+        session_destroy();
+        header("location:login.php");
     }else{
         header("Location: changePassword.php?Message='New Password does not match'");
     }
