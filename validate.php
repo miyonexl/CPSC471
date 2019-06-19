@@ -20,11 +20,15 @@ session_start();
     if($conn->connect_error){
         die("Connection failed".$conn->connect_error);
     }
+    $link = mysqli_connect($servername, $username, $password, $db);
+    $uname =  mysqli_real_escape_string($link, $_POST["uname"]);        // sql injection prevention
+    $psw = mysqli_real_escape_string($link, $_POST["psw"]);             // sql injection prevention
 
     $sql = "SELECT * FROM EMPLOYEE
-    WHERE EmployeeID = ('$uname') AND Password = ('$psw')";
+    WHERE EmployeeID = '$uname' AND Password = '$psw'";
 
     $result = $conn->query($sql);
+
 
     if($result->num_rows > 0){
     	$row = $result->fetch_assoc();
