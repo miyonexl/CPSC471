@@ -33,7 +33,7 @@ session_start();
     	$_SESSION["type"] = $row["UserType"];
     	header("Location: dashboard.php");
     }else{
-    	header("Location: login.php");
+    	header("Location: login.php?Message=Invalid Username or Password");
     }
 
     $conn->close();

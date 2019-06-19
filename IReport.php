@@ -74,7 +74,7 @@ session_start();
                 //Manager session query
                 $sql = "SELECT  `A`.`EmployeeID`, `A`.`Date`, `A`.`ProjName`, `L`.`AllocType`, `L`.`Task`, `A`.`Hours` "
                         ."FROM        `EMPLOYEE` E, `EMPLOYEE` M, `ALLOCATE` A, `ALLOCATION` L "
-                        ."WHERE   `M`.`EmployeeID` = '$uname' AND `M`.`UserType` = 'm' AND `E`.`EmployeeID` "
+                        ."WHERE   `M`.`EmployeeID` = ('$uname') AND `M`.`UserType` = 'm' AND `E`.`EmployeeID` "
                         ."= '$eId' AND `E`.`EmployeeID` = `A`.`EmployeeID` AND "
                         ."`A`.`EmployeeID` = `L`.`EmployeeID` AND `A`.`Date` >= '$startDate' AND "
                         ."`A`.`Date` <= '$endDate' "

@@ -29,14 +29,14 @@ session_start();
 
 
     if($conn->query($sql) != TRUE){
-        die("Connection faileddddd".$conn->connect_error);
+        die("Connection failed allocate".$conn->connect_error);
     }
 
     $sql = "INSERT INTO ALLOCATION VALUES('$pname', '$eId', '$uname', '$date', '$aType', '$task' )";
 
 
     if($conn->query($sql) != TRUE){
-        die("Connection faileddddd".$conn->connect_error);
+        die("Connection failed allocation".$conn->connect_error);
     }
 
     header("Location: dashboard.php");

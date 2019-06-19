@@ -26,14 +26,14 @@ session_start();
     $sql = "SELECT Password FROM EMPLOYEE WHERE EmployeeID = '$uname'";
 
     $result = $conn->query($sql);
-
+    
     if($result->num_rows > 0){
         $row = $result->fetch_assoc();  
         if($cPsw != $row["Password"]){
             header("Location: changePassword.php?Message='Invalid Password'");
         }
     }else{
-        header("Location: changePassword.php?Message='Invalid Password'");
+        header("Location: changePassword.php?Message='no Password'");
     }
 
     if($nPsw == $nPsw2){

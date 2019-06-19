@@ -29,10 +29,10 @@ session_start();
             <input type="text" placeholder="Current Password (required)" name="cPsw" required>
 
             <label for="nPsw"><b>New Password</b></label>
-            <input type="text" placeholder="New Password" name="nPsw" required>
+            <input type="text" placeholder="New password (required)" name="nPsw" required>
 
             <label for="nPsw2"><b>Comfirm Password</b></label>
-            <input type="text" placeholder="New Password" name="nPsw2" required>
+            <input type="text" placeholder="Confirm password (required)" name="nPsw2" required>
 
             <?php if($_GET["Message"] != null){
                 $msg = $_GET["Message"];
